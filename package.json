@@ -16,7 +16,6 @@
     "test": "npm run test -w @wattwise/core && npm run test -w @wattwise/web",
     "test:e2e": "npm run test:e2e -w @wattwise/web",
     "test:rules": "npm run test -w @wattwise/firebase-rules-tests",
-    "typecheck": "npm run typecheck -w @wattwise/core && npm run typecheck -w @wattwise/web",
-    "lint": "npm run lint -w @wattwise/web"
+    "typecheck": "npm run typecheck -w @wattwise/core && npm run typecheck -w @wattwise/web"
   }
 }
