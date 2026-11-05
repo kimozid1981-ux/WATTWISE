@@ -1,0 +1,22 @@
+{
+  "name": "wattwise",
+  "private": true,
+  "version": "0.1.0",
+  "description": "WATTWISE: European household energy intelligence platform",
+  "workspaces": [
+    "packages/*",
+    "apps/*",
+    "firebase/tests"
+  ],
+  "engines": {
+    "node": ">=20.9"
+  },
+  "scripts": {
+    "dev": "npm run dev -w @wattwise/web",
+    "build": "npm run build -w @wattwise/web",
+    "test": "npm run test -w @wattwise/core && npm run test -w @wattwise/web",
+    "test:e2e": "npm run test:e2e -w @wattwise/web",
+    "test:rules": "npm run test -w @wattwise/firebase-rules-tests",
+    "typecheck": "npm run typecheck -w @wattwise/core && npm run typecheck -w @wattwise/web"
+  }
+}
