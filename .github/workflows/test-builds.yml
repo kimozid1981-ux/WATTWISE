@@ -86,3 +86,29 @@ jobs:
           name: WATTWISE-windows-test-exe
           path: native/desktop/dist/*.exe
           retention-days: 30
+
+  # Publishes the two files as a GitHub pre-release so they can be downloaded
+  # directly (e.g. on a phone) without unzipping workflow artifacts.
+  publish:
+    needs: [android, windows]
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: WATTWISE-*-test-*
+          merge-multiple: true
+          path: release
+      - name: Create pre-release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="test-build-${{ github.run_number }}"
+          gh release create "$TAG" release/* \
+            --repo "${{ github.repository }}" \
+            --target "${{ github.sha }}" \
+            --prerelease \
+            --title "WATTWISE test build ${{ github.run_number }}" \
+            --notes "Test build from commit ${{ github.sha }} (branch ${{ github.ref_name }}). Offline local mode: DEMO data and manual bill entry work; AI bill reading needs the online server. Android: allow installs from unknown sources. Windows: unsigned, SmartScreen may warn (More info → Run anyway)."
