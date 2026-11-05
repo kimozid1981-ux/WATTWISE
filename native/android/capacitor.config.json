@@ -1,0 +1,7 @@
+{
+  "appId": "eu.wattwise.app",
+  "appName": "WATTWISE",
+  "webDir": "../../apps/web/out",
+  "backgroundColor": "#060a13",
+  "android": { "allowMixedContent": false }
+}

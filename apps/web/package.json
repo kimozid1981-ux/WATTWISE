@@ -9,7 +9,8 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:e2e": "playwright test",
-    "test:e2e:firebase": "firebase emulators:exec --only auth,firestore,storage --project demo-wattwise --config ../../firebase.json \"playwright test -c playwright.firebase.config.ts\""
+    "test:e2e:firebase": "firebase emulators:exec --only auth,firestore,storage --project demo-wattwise --config ../../firebase.json \"playwright test -c playwright.firebase.config.ts\"",
+    "build:static": "node scripts/build-static.mjs"
   },
   "dependencies": {
     "@wattwise/core": "*",
