@@ -24,7 +24,7 @@ import type { DataStore, Household, Profile, UserDataExport } from './types';
  *   users/{uid}                                   profile + householdId
  *   households/{householdId}                      household, ownerId, memberIds
  *   households/{householdId}/energy_bills/{id}    confirmed bills
- *   Storage: households/{householdId}/bills/{id}/original   (only if the user opted in)
+ *   Storage: users/{uid}/bills/{id}/original   (only if the user opted in)
  *
  * Access is enforced by firebase/firestore.rules and firebase/storage.rules.
  */
@@ -130,7 +130,7 @@ export class FirestoreDataStore implements DataStore {
     const col = await this.billsCollection();
     let originalDocumentPath: string | null = null;
     if (originalFile) {
-      originalDocumentPath = `households/${this.householdId}/bills/${bill.id}/original`;
+      originalDocumentPath = `users/${this.user.uid}/bills/${bill.id}/original`;
       await uploadBytes(ref(getStorage(firebaseApp()), originalDocumentPath), originalFile, {
         contentType: originalFile.type,
       });

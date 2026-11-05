@@ -2,6 +2,9 @@
 
 import { getApp, getApps, initializeApp, type FirebaseApp } from 'firebase/app';
 import { initializeAppCheck, ReCaptchaEnterpriseProvider } from 'firebase/app-check';
+import { connectAuthEmulator, getAuth } from 'firebase/auth';
+import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore';
+import { connectStorageEmulator, getStorage } from 'firebase/storage';
 
 /**
  * Firebase web configuration. These values identify the project and are safe
@@ -21,6 +24,7 @@ export function isFirebaseConfigured(): boolean {
 }
 
 let appCheckStarted = false;
+let emulatorsConnected = false;
 
 export function firebaseApp(): FirebaseApp {
   if (!isFirebaseConfigured()) throw new Error('Firebase is not configured');
@@ -29,6 +33,13 @@ export function firebaseApp(): FirebaseApp {
   if (siteKey && !appCheckStarted && typeof window !== 'undefined') {
     initializeAppCheck(app, { provider: new ReCaptchaEnterpriseProvider(siteKey), isTokenAutoRefreshEnabled: true });
     appCheckStarted = true;
+  }
+  // Local development / automated tests against the Firebase Emulator Suite.
+  if (process.env.NEXT_PUBLIC_FIREBASE_USE_EMULATORS === 'true' && !emulatorsConnected) {
+    emulatorsConnected = true;
+    connectAuthEmulator(getAuth(app), 'http://127.0.0.1:9099', { disableWarnings: true });
+    connectFirestoreEmulator(getFirestore(app), '127.0.0.1', 8080);
+    connectStorageEmulator(getStorage(app), '127.0.0.1', 9199);
   }
   return app;
 }

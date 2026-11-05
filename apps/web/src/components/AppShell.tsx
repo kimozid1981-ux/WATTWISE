@@ -8,6 +8,8 @@ import { useApp } from './AppProvider';
 import { Logo } from './Logo';
 import { Spinner, cx } from './ui';
 
+export const AFTER_SIGN_OUT_KEY = 'wattwise.afterSignOut';
+
 const NAV = [
   { href: '/app', key: 'nav.home', icon: Home },
   { href: '/app/bills', key: 'nav.bills', icon: FileText },
@@ -22,7 +24,17 @@ export function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (status === 'signed_out') router.replace('/signin');
+    if (status === 'signed_out') {
+      // After an explicit sign-out or account deletion, go to the landing page instead of sign-in.
+      let target = '/signin';
+      try {
+        target = sessionStorage.getItem(AFTER_SIGN_OUT_KEY) ?? '/signin';
+        sessionStorage.removeItem(AFTER_SIGN_OUT_KEY);
+      } catch {
+        /* ignore */
+      }
+      router.replace(target);
+    }
     else if (status === 'ready' && !profile) router.replace('/onboarding');
   }, [status, profile, router]);
 

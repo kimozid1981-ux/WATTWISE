@@ -8,7 +8,8 @@
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "test:e2e:firebase": "firebase emulators:exec --only auth,firestore,storage --project demo-wattwise --config ../../firebase.json \"playwright test -c playwright.firebase.config.ts\""
   },
   "dependencies": {
     "@wattwise/core": "*",
@@ -28,6 +29,7 @@
     "@types/react-dom": "^19.2.0",
     "tailwindcss": "^4.3.0",
     "typescript": "^5.9.0",
-    "vitest": "^4.0.0"
+    "vitest": "^4.0.0",
+    "firebase-tools": "^15.35.0"
   }
 }

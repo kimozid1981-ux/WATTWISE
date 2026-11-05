@@ -19,7 +19,7 @@ export function CostDonut({ slices, center, centerSub }: { slices: DonutSlice[];
       <div className="relative mx-auto size-44">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
-            <Pie data={positive} dataKey="value" nameKey="label" innerRadius="70%" outerRadius="100%" paddingAngle={2} stroke="none" isAnimationActive>
+            <Pie data={positive} dataKey="value" nameKey="label" innerRadius="70%" outerRadius="100%" paddingAngle={2} stroke="none" isAnimationActive={false}>
               {positive.map((s, i) => (
                 <Cell key={s.key} fill={COLORS[i % COLORS.length]} />
               ))}

@@ -5,7 +5,8 @@
   "description": "WATTWISE: European household energy intelligence platform",
   "workspaces": [
     "packages/*",
-    "apps/*"
+    "apps/*",
+    "firebase/tests"
   ],
   "engines": {
     "node": ">=20.9"

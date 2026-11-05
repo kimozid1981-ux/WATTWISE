@@ -5,6 +5,7 @@ import { Download, ExternalLink, LogOut, Trash2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useApp } from '@/components/AppProvider';
+import { AFTER_SIGN_OUT_KEY } from '@/components/AppShell';
 import { HouseholdFields } from '@/components/HouseholdFields';
 import { LanguageSelect } from '@/components/LanguageSelect';
 import { Button, Card, Field, Notice, SectionTitle, inputClass, cx } from '@/components/ui';
@@ -56,6 +57,7 @@ export default function ProfilePage() {
     if (!store) return;
     setDeleting(true);
     setError(null);
+    sessionStorage.setItem(AFTER_SIGN_OUT_KEY, '/');
     try {
       await store.deleteAll();
       if (mode === 'firebase' && firebaseUser) {
@@ -65,6 +67,7 @@ export default function ProfilePage() {
       router.replace('/');
     } catch (e) {
       const code = typeof e === 'object' && e && 'code' in e ? String((e as { code: string }).code) : '';
+      sessionStorage.removeItem(AFTER_SIGN_OUT_KEY);
       setError(code === 'auth/requires-recent-login' ? t('profile.reauth') : e instanceof Error ? e.message : String(e));
       setDeleting(false);
     }
@@ -204,6 +207,7 @@ export default function ProfilePage() {
           <Button
             variant="ghost"
             onClick={async () => {
+              sessionStorage.setItem(AFTER_SIGN_OUT_KEY, '/');
               await signOut();
               router.replace('/');
             }}
